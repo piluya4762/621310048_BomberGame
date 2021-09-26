@@ -44,4 +44,9 @@ public class PlayerController : MonoBehaviour
     {
         isCurrentPlayer = true;
     }
+    public void Move(Vector3 position)
+    {
+        transform.position = position;
+    }
+
 }

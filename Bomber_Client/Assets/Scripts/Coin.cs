@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject model;
+    [SerializeField] private float rotateSpeed = 270;
+    [SerializeField] private float coinHigh = 1.5f;
+    [SerializeField] private float coinJumpHigh = 0.25f;
+    [SerializeField] private float coinJumpSpeed = 4f;
+
+    private void Start()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        var eulerAngles = model.transform.eulerAngles;
+        var position = model.transform.position;
+
+        eulerAngles.y = rotateSpeed * Time.time;
+        position.y = coinHigh + Mathf.Sin(Time.time * coinJumpSpeed) * coinJumpHigh;
+
+        model.transform.eulerAngles = eulerAngles;
+        model.transform.position = position;
     }
 }
