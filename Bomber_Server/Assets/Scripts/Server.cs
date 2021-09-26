@@ -1,16 +1,15 @@
 using LiteNetLib;
-using Newtonsoft.Json;
-
-//for Dictionary
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
+using Newtonsoft.Json;
+//for Dictionary
+using System.Collections;
+using System.Collections.Generic;
 
 public class Server : MonoBehaviour, INetEventListener
 {
     [SerializeField] private ServerController serverController;
-    [SerializeField] private CoinController coinController;
     public const short PORT = 9050;
     public const string KEY = "MYKEY";
     private NetManager server;
@@ -19,15 +18,12 @@ public class Server : MonoBehaviour, INetEventListener
 
     private ModelToObjectMapper modelToObjectMapper;
 
-    public Dictionary<int, PeerConnection> PeerConnections => peerConnections;
-
     private void Awake()
     {
         Debug.Log("Awake");
         server = new NetManager(this);
         server.Start(PORT);
     }
-
     private void Start()
     {
         modelToObjectMapper = new ModelToObjectMapper(serverController);
@@ -36,7 +32,6 @@ public class Server : MonoBehaviour, INetEventListener
     private void Update()
     {
         server.PollEvents();
-        serverController.UpdateData();
     }
 
     public void SendCreatePlayer(PlayerController playerController)
@@ -53,27 +48,19 @@ public class Server : MonoBehaviour, INetEventListener
             clientConnection.Send(json);
         }
     }
-
     public void OnConnectionRequest(ConnectionRequest request)
     {
         Debug.Log("OnConnectionRequest");
         CreatePeerConnection(request.AcceptIfKey(KEY));
     }
-
     public void OnNetworkError(IPEndPoint endPoint, SocketError socketError) => Debug.Log("OnNetworkError");
-
-    public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
-    {
-    }
-
+    public void OnNetworkLatencyUpdate(NetPeer peer, int latency) { }
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
     {
         Debug.Log("OnNetworkReceive");
         modelToObjectMapper.DeserializeToFunction(peer, reader.GetString());
     }
-
     public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType) => Debug.Log("OnNetworkReceiveUnconnected");
-
     private void CreatePeerConnection(NetPeer peer)
     {
         var id = clientCurrnetId++;
@@ -86,17 +73,9 @@ public class Server : MonoBehaviour, INetEventListener
             var player = clientConnection.Player;
             if (player != null)
             {
-                //Debug.Log($"clientConnection {clientConnection.Id} player.Id {player.Id}");
                 var createPlayerModel = new CreatePlayerModel { Id = player.Id, Position = player.Position };
                 model.CreatePlayerModels.Add(createPlayerModel);
             }
-        }
-
-        foreach (var pair in coinController.Coins)
-        {
-            var coinId = pair.Key;
-            var position = pair.Value.transform.position;
-            model.CreateCoins.Add(coinId, new Vector3Model(position));
         }
         peerConnections.Add(id, peerConnection);
         serverController.CreatePlayer(peerConnection);
@@ -110,7 +89,6 @@ public class Server : MonoBehaviour, INetEventListener
     {
         Debug.Log("OnPeerConnected");
     }
-
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo) => Debug.Log("OnPeerDisconnected");
 
     public void Remove(PeerConnection peerConnection)
