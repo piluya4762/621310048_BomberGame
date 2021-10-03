@@ -390,6 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverController: {fileID: 1881536980}
   coinController: {fileID: 1455518688}
+  bombController: {fileID: 1914943462}
 --- !u!114 &1881536980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,8 +406,54 @@ MonoBehaviour:
   server: {fileID: 1881536979}
   playerControllerPrefab: {fileID: 6871371190107716124, guid: 76c7b09da8a308f4b927640093b0fd6e, type: 3}
   coinController: {fileID: 1455518688}
+  bombController: {fileID: 1914943462}
   spawnArea:
     size: {x: 8, y: 8}
+--- !u!1 &1914943461
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914943463}
+  - component: {fileID: 1914943462}
+  m_Layer: 0
+  m_Name: BombController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1914943462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914943461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872f3606dfde2d148b9fa5b0a33b8ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombPrefab: {fileID: 2383352286024991348, guid: d45ac6b4f3b4f1341a41bf8fa83695f0, type: 3}
+  newBombs: []
+--- !u!4 &1914943463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914943461}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.611714, y: -7.3476844, z: -5.259111}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1678399120467944795
 PrefabInstance:
   m_ObjectHideFlags: 0
